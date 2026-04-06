@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Main {
+public class Main01 {
     public static void main(String[] args){
         Scanner input = new Scanner(System.in); // 문자열 \n 문자 형태의 입력
         String str = input.nextLine().toLowerCase();
