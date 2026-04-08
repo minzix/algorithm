@@ -13,7 +13,7 @@ public class Main0208 {
             sortedList.add(num);
             score[i] = num;
         }
-        Collections.sort(sortedList, Collections.reverseOrder());
+        sortedList.sort(Collections.reverseOrder());
         for (int i = 0; i < N; i++) {
             if (!rank.containsKey(sortedList.get(i))) {
                 rank.put(sortedList.get(i), i + 1);
