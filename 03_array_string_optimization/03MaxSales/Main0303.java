@@ -9,13 +9,14 @@ public class Main0303 {
         for (int i = 0; i < N; i ++) {
             arr[i] = sc.nextInt();
         }
-        int max = 0;
-        for (int i = 0; i < N - k; i ++) {
-            int temp = 0;
-            for (int j = 0; j < k; j++) {
-                temp += arr[i + j];
-            }
-            if (max < temp) max = temp;
+        int sum = 0;
+        for (int i = 0; i < k; i++) {
+            sum += arr[i];
+        }
+        int max = sum;
+        for (int i = k; i < N; i++){
+            sum = sum + arr[i] - arr[i-k];
+            max = Math.max(max, sum);
         }
         System.out.println(max);
     }
