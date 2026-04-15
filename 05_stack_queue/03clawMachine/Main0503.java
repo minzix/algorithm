@@ -12,22 +12,19 @@ public class Main0503 {
             }
         }
         int M = sc.nextInt();
-        sc.nextLine();
-        Stack<Integer> basket = new Stack<>(); // 숫자를 넣기 전에 제일 위의 숫자를 확인한 후 같으면 pop하고, 다르면 그냥 넣음, pop 할 때마다 count ++
+        Stack<Integer> basket = new Stack<>();
         int count = 0;
         for (int i = 0; i < M; i++) {
             int row = sc.nextInt() - 1;
-//            System.out.println("row = " + row);
             for(int col = 0; col < N; col++) {
-                System.out.println("col = " + col);
                 if (board[col][row] != 0) {
                     if (basket.empty()) basket.add(board[col][row]);
                     else if (basket.peek() == board[col][row]) {
                         basket.pop();
-                        count++;
-                        System.out.println("count = " + count);
+                        count += 2;
                     }
                     else basket.add(board[col][row]);
+                    board[col][row] = 0;
                     break;
                 }
             }
