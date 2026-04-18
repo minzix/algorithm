@@ -10,15 +10,25 @@ public class Main0604 {
         for (int i = 0; i < N; i++) {
             jobArr[i] = sc.nextInt();
         }
-        for (int s = 0; s < S; s++) {
-            cacheArr[s] = jobArr[s];
+        for (int j = 0; j < N; j++) {
+            boolean isHit = false;
+            for (int c = 0; c < S; c++) {
+                if (jobArr[j] == cacheArr[c]) { // cache hit
+                    int hit = cacheArr[c];
+                    for (int i = c; i > 0; i--) cacheArr[i] = cacheArr[i - 1];
+                    cacheArr[0] = hit;
+                    isHit = true;
+                    break;
+                }
+            }
+            if (!isHit) {
+                // cache miss
+                for (int i = S - 1; i > 0; i--) cacheArr[i] = cacheArr[i - 1];
+                cacheArr[0] = jobArr[j];
+            }
         }
-        for (int n = 0; n < N; n++) {
-            // cache miss
-
-            // cache hit
+        for (int i : cacheArr) {
+            System.out.print(i + " ");
         }
-
-
     }
 }
