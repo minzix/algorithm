@@ -1,4 +1,4 @@
-package DecisionAlgorithm;
+package DecisionAlgorithmDvd;
 
 import java.util.Scanner;
 
