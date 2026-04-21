@@ -1,5 +1,3 @@
-package postfix;
-
 import java.util.Scanner;
 import java.util.Stack;
 
