@@ -1,13 +1,12 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main0804 {
     static class Lecture {
-        int date;
+        int deadline ;
         int money;
 
         Lecture(int date, int money) {
-            this.date = date;
+            this.deadline  = date;
             this.money = money;
         }
     }
@@ -22,23 +21,19 @@ public class Main0804 {
             lectures.add(new Lecture(D, M));
             maxDate = Math.max(maxDate, D);
         }
-        int[] dates = new int[maxDate];
-        lectures.sort((a, b) -> { // money, date 순 내림차순 정렬
-            if (a.money == b.money) return b.date - a.date;
-            else return b.money - a.money;
-        });
-        int totalMoney = 0;
-        // 1일 1 강연이므로, dueDate - 1 이하인 인덱스의 값이 0인 게 존재하는지 확인
-        for (int i = 0; i < N; i++) {
-            int dueDate = lectures.get(i).date;
-            for (int j = dueDate - 1; j >= 0; j--) {
-                if (dates[j] == 0) {
-                    dates[j] = lectures.get(i).money;
-                    totalMoney += lectures.get(i).money;
-                    break;
-                }
+        // 강연들을 date순으로 내림차순 정렬
+        lectures.sort((a, b) -> b.deadline  - a.deadline);
+
+        PriorityQueue<Lecture> lectureQueue = new PriorityQueue<>((a, b) -> b.money - a.money);
+        int answer = 0, index = 0;
+
+        for (int day = maxDate; day > 0; day--) {
+            while (index < N && lectures.get(index).deadline >= day) {
+                lectureQueue.add(lectures.get(index));
+                index++;
             }
+            if (!lectureQueue.isEmpty()) answer += lectureQueue.poll().money; // day 하나마다 한번만 추가
         }
-        System.out.println(totalMoney);
+        System.out.println(answer);
     }
 }
