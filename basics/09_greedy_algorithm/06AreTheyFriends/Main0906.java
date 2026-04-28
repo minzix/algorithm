@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Find: 어떤 원소가 어느 집합에 속하는지 대표(parent, root) 를 찾는 연산. 대표가 같으면 같은 집합임. find(a) = a가 속한 그룹의 대표
  * Union: 두 원소가 속한 집합을 하나로 합치는 연산
  */
-public class Main0806 {
+public class Main0906 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();

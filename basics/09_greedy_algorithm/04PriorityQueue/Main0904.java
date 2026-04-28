@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Main0804 {
+public class Main0904 {
     static class Lecture {
         int deadline ;
         int money;

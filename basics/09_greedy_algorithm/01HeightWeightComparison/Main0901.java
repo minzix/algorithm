@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main0801 {
+public class Main0901 {
     static class Candidate {
         int height;
         int weight;
