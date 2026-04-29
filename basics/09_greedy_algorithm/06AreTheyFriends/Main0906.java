@@ -6,13 +6,13 @@ import java.util.Scanner;
  * union: 두 원소가 속한 집합을 하나로 합치는 연산
  */
 public class Main0906 {
-    public static int find(int node, int[] parent){
-        if (node == parent[node]) return node;
-        else return parent[node] = find(parent[node], parent);
+    public static int find(int v, int[] parent){
+        if (v == parent[v]) return v;
+        else return parent[v] = find(parent[v], parent);
     }
-    public static void union(int a, int b, int[] parent){
-        int rootA = find(a, parent);
-        int rootB = find(b, parent);
+    public static void union(int v1, int v2, int[] parent){
+        int rootA = find(v1, parent);
+        int rootB = find(v2, parent);
         if (rootA != rootB) parent[rootA] = rootB;
     }
     public static void main(String[] args) {
@@ -28,14 +28,14 @@ public class Main0906 {
         int[] parent = new int[N + 1];
         for (int i = 1; i <= N; i++) parent[i] = i;
         for (int i = 1; i <= M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            union(a, b, parent);
+            int v1 = sc.nextInt();
+            int v2 = sc.nextInt();
+            union(v1, v2, parent);
         }
-        int a = sc.nextInt();
-        int b = sc.nextInt();
-        int rootA = find(a, parent);
-        int rootB = find(b, parent);
+        int v1 = sc.nextInt();
+        int v2 = sc.nextInt();
+        int rootA = find(v1, parent);
+        int rootB = find(v2, parent);
         if (rootA == rootB) System.out.println("YES");
         else System.out.println("NO");
     }
