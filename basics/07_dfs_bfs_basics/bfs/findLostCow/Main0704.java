@@ -7,7 +7,7 @@ public class Main0704 {
         Scanner sc = new Scanner(System.in);
         int S = sc.nextInt(); // 현수의 위치
         int E = sc.nextInt(); // 송아지의 위치
-        boolean visited[] = new boolean[10001];
+        boolean[] visited = new boolean[10001];
         int[] move = {1, -1, 5}; // 현수는 +1, -1, +5 이동 가능
         int level = 0;
         Queue<Integer> queue = new LinkedList<>();
