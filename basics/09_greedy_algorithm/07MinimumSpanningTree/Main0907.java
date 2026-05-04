@@ -35,9 +35,19 @@ public class Main0907 {
             int cost = sc.nextInt();
             graph.add(new Edge(v1, v2, cost));
         }
-
         graph.sort((a, b) -> a.cost - b.cost);
+        int answer=0;
+        int[] parent = new int[V+1];
+        for (int i = 1; i <= V; i++) parent[i] = i;
 
-
+        for(Edge ob : graph){
+            int fv1 = find(ob.v1, parent);
+            int fv2 = find(ob.v2, parent);
+            if(fv1 != fv2){
+                answer += ob.cost;
+                union(ob.v1, ob.v2, parent);
+            }
+        }
+        System.out.println(answer);
     }
 }
