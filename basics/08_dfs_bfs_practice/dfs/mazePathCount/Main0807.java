@@ -29,7 +29,7 @@ public class Main0807 {
         maze = new int[WIDTH][HEIGHT];
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < HEIGHT; i++) for (int j = 0; j < WIDTH; j++) maze[i][j] = sc.nextInt();
-        maze[0][0] = 2;
+        maze[0][0] = 1;
         dfs(0, 0);
         System.out.println(count);
     }
