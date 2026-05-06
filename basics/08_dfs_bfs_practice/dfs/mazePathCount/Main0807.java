@@ -18,7 +18,7 @@ public class Main0807 {
             int nextY = y + dy[i];
 
             // 배열 범위 안에 있고, 이동 가능한 통로라면
-            if (nextX >= 0 && nextX < 7 && nextY >= 0 && nextY < 7 && maze[nextY][nextX] == 0) {
+            if (nextX >= 0 && nextX < WIDTH && nextY >= 0 && nextY < HEIGHT && maze[nextY][nextX] == 0) {
                 maze[nextY][nextX] = 1; // 방문 체크
                 dfs(nextX, nextY);
                 maze[nextY][nextX] = 0; // 백트래킹
