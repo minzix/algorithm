@@ -3,33 +3,27 @@ import java.util.Scanner;
 public class Main0807 {
     static int[][] maze;
     static int WIDTH = 7, HEIGHT = 7, count = 0;
+    // 상, 하, 좌, 우
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {-1, 1, 0, 0};
+
     public static void dfs (int x, int y) {
         if (x == WIDTH - 1 && y == HEIGHT - 1) {
             count++;
             return;
         }
-        // 출발점: maze[y][x]
-        if (y > 0) if (maze[y - 1][x] == 0) {
-            maze[y - 1][x] = 2;
-            dfs(x, y - 1);
-            maze[y - 1][x] = 0;
-        }
-        if (y < HEIGHT - 1) if (maze[y + 1][x] == 0) {
-            maze[y + 1][x] = 2;
-            dfs(x, y + 1);
-            maze[y + 1][x] = 0;
-        }
-        if (x > 0) if (maze[y][x - 1] == 0) {
-            maze[y][x - 1] = 2;
-            dfs(x - 1, y);
-            maze[y][x - 1] = 0;
-        }
-        if (x < WIDTH - 1) if (maze[y][x + 1] == 0) {
-            maze[y][x + 1] = 2;
-            dfs(x + 1, y);
-            maze[y][x + 1] = 0;
-        }
+        // 상하좌우 4방향 탐색
+        for (int i = 0; i < 4; i++) {
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
 
+            // 배열 범위 안에 있고, 이동 가능한 통로라면
+            if (nextX >= 0 && nextX < 7 && nextY >= 0 && nextY < 7 && maze[nextY][nextX] == 0) {
+                maze[nextY][nextX] = 1; // 방문 체크
+                dfs(nextX, nextY);
+                maze[nextY][nextX] = 0; // 백트래킹
+            }
+        }
     }
     public static void main(String[] args) {
         maze = new int[WIDTH][HEIGHT];
