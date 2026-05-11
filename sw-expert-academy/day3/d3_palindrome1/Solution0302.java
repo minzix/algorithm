@@ -22,14 +22,14 @@ public class Solution0302 {
                 for (int j = 0; j < SIZE; j++) arr[i][j] = temp[j];
             }
 
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j <= SIZE - length; j++) {
+            for (int fixedIdx = 0; fixedIdx < SIZE; fixedIdx++) {
+                for (int startIdx = 0; startIdx <= SIZE - length; startIdx++) {
                     // 가로
-                    String row = new String(arr[i], j, length);
+                    String row = new String(arr[fixedIdx], startIdx, length); // new String(배열, 시작인덱스(offset), 길이(count))
 
                     // 세로
                     char[] temp = new char[length];
-                    for (int k = 0; k < length; k++) temp[k] = arr[j + k][i];
+                    for (int offset = 0; offset < length; offset++) temp[offset] = arr[startIdx + offset][fixedIdx];
                     String col = new String(temp);
 
                     if (isPalindrome(row)) answer++;
