@@ -1,0 +1,64 @@
+import java.util.Scanner;
+import java.io.FileInputStream;
+
+class Solution {
+    public static void main(String args[]) throws Exception {
+        // System.setIn(new FileInputStream("res/input.txt"));
+        Scanner sc = new Scanner(System.in);
+
+        int T = sc.nextInt();
+
+        for (int test_case = 1; test_case <= T; test_case++) {
+
+            int N = sc.nextInt();
+            int[][] arr = new int[N][N];
+
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    arr[i][j] = sc.nextInt();
+                }
+            }
+
+            System.out.println("#" + test_case);
+
+            String[] rotate90 = new String[N];
+            String[] rotate180 = new String[N];
+            String[] rotate270 = new String[N];
+
+            for (int i = 0; i < N; i++) {
+                rotate90[i] = "";
+                rotate180[i] = "";
+                rotate270[i] = "";
+            }
+
+            // 90도 회전: arr[N-1-j][i]
+            for (int i = 0; i < N; i++) {
+                for (int j = N - 1; j >= 0; j--) {
+                    rotate90[i] += arr[j][i];
+                }
+            }
+
+            // 180도 회전: arr[N-1-i][N-1-j]
+            for (int i = N - 1, idx = 0; i >= 0; i--, idx++) {
+                for (int j = N - 1; j >= 0; j--) {
+                    rotate180[idx] += arr[i][j];
+                }
+            }
+
+            // 270도 회전: arr[j][N-1-i]
+            for (int i = N - 1, idx = 0; i >= 0; i--, idx++) {
+                for (int j = 0; j < N; j++) {
+                    rotate270[idx] += arr[j][i];
+                }
+            }
+
+            for (int i = 0; i < N; i++) {
+                System.out.println(
+                    rotate90[i] + " " +
+                    rotate180[i] + " " +
+                    rotate270[i]
+                );
+            }
+        }
+    }
+}
