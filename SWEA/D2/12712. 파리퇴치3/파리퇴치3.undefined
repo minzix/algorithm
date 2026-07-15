@@ -1,0 +1,78 @@
+import java.util.Scanner;
+import java.io.FileInputStream;
+
+class Solution
+{
+    // + 방향 : 상, 하, 좌, 우
+    static int[] drPlus = {-1, 1, 0, 0};
+    static int[] dcPlus = {0, 0, -1, 1};
+
+    // x 방향 : 좌상, 우상, 좌하, 우하
+    static int[] drCross = {-1, -1, 1, 1};
+    static int[] dcCross = {-1, 1, -1, 1};
+
+    public static void main(String args[]) throws Exception
+    {
+        //System.setIn(new FileInputStream("res/input.txt"));
+
+        Scanner sc = new Scanner(System.in);
+
+        int T = sc.nextInt();
+
+        for(int test_case = 1; test_case <= T; test_case++)
+        {
+            int N = sc.nextInt();
+            int M = sc.nextInt();
+
+            int[][] map = new int[N][N];
+
+            // 배열 입력
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < N; j++) {
+                    map[i][j] = sc.nextInt();
+                }
+            }
+
+            int answer = 0;
+
+            // 모든 칸을 중심으로 탐색
+            for(int r = 0; r < N; r++) {
+                for(int c = 0; c < N; c++) {
+
+                    int plusSum = map[r][c];
+                    int crossSum = map[r][c];
+
+                    // 중심에서 거리 1 ~ M-1까지
+                    for(int dist = 1; dist < M; dist++) {
+
+                        // + 모양
+                        for(int d = 0; d < 4; d++) {
+                            int nr = r + drPlus[d] * dist;
+                            int nc = c + dcPlus[d] * dist;
+
+                            if(nr >= 0 && nr < N && nc >= 0 && nc < N) {
+                                plusSum += map[nr][nc];
+                            }
+                        }
+
+                        // x 모양
+                        for(int d = 0; d < 4; d++) {
+                            int nr = r + drCross[d] * dist;
+                            int nc = c + dcCross[d] * dist;
+
+                            if(nr >= 0 && nr < N && nc >= 0 && nc < N) {
+                                crossSum += map[nr][nc];
+                            }
+                        }
+                    }
+
+                    answer = Math.max(answer, Math.max(plusSum, crossSum));
+                }
+            }
+
+            System.out.println("#" + test_case + " " + answer);
+        }
+
+        sc.close();
+    }
+}
