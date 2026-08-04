@@ -2,17 +2,17 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] answers) {
-
-        int[] first = {1, 2, 3, 4, 5};
-        int[] second = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] third = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-
+        int[] answer = {};
+        int[] firstStudent = {1, 2, 3 ,4, 5};
+        int[] secondStudent = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] thirdStudent = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        
         int[] score = new int[3];
-
-        for (int i = 0; i < answers.length; i++) {
-            if (answers[i] == first[i % first.length]) score[0]++;
-            if (answers[i] == second[i % second.length]) score[1]++;
-            if (answers[i] == third[i % third.length]) score[2]++;
+        
+        for (int i = 0; i < answers.length; i++) {   
+            if (answers[i] == firstStudent[i % firstStudent.length]) score[0]++;
+            if (answers[i] == secondStudent[i % secondStudent.length]) score[1]++;
+            if (answers[i] == thirdStudent[i % thirdStudent.length]) score[2]++;
         }
 
         int max = Math.max(score[0], Math.max(score[1], score[2]));
@@ -20,10 +20,16 @@ class Solution {
         List<Integer> list = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            if (score[i] == max)
-                list.add(i + 1);
+            if (score[i] == max) {
+                list.add(i + 1);   // 학생 번호는 1부터 시작
+            }
         }
 
-        return list.stream().mapToInt(Integer::intValue).toArray();
+        answer = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            answer[i] = list.get(i);
+        }
+
+        return answer;
     }
 }
