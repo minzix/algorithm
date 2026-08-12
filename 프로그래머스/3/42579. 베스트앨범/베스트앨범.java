@@ -1,64 +1,42 @@
 import java.util.*;
 
-// 장르별로 가장 많이 재생된 노래를 2개씩 모아 베스트앨범 출시
-// 장르 총 재생수를 저장
-// 장르별 노래 목록 저장
-
-class Song {
-    int play;
-    int number;
-
-    Song(int play, int number) {
-        this.play = play;
-        this.number = number;
-    }
-}
-
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
-
-        Map<String, Integer> sortGenre = new HashMap<>();
-        Map<String, List<Song>> sortSong = new HashMap<>();
-
-        // 장르별 총 재생수, 노래 목록 저장
-        for (int i = 0; i < genres.length; i++) {
-            String genre = genres[i];
-            int play = plays[i];
-
-            sortGenre.put(genre, sortGenre.getOrDefault(genre, 0) + play);
-
-            sortSong.putIfAbsent(genre, new ArrayList<>());
-            sortSong.get(genre).add(new Song(play, i));
-        }
-
-        // 장르를 총 재생수 기준으로 정렬
-        List<String> genreList = new ArrayList<>(sortGenre.keySet());
-        genreList.sort((a, b) -> sortGenre.get(b) - sortGenre.get(a));
-
         List<Integer> result = new ArrayList<>();
+        
+        Map<String, List<Integer>> map = new HashMap<>();
+        Map<String, Integer> songCountMap = new HashMap<>(); // 각 장르에 속한 노래들의 재생횟수 sum
+        
+        for (int i = 0; i < genres.length; i++) {
+            List<Integer> tmp = map.getOrDefault(genres[i], new ArrayList<>());
+            tmp.add(i);
+            map.put(genres[i], tmp);
+            songCountMap.put(genres[i], songCountMap.getOrDefault(genres[i], 0) + plays[i]);
+        }
+        
+        // map을 정렬해야 할 때에는 Map.Entry<>, .entrySet() 을 사용해서 list로 바꿔야 함. 
+        List<Map.Entry<String, List<Integer>>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, 
+            (a, b) -> songCountMap.get(b.getKey()) - songCountMap.get(a.getKey())
+        );
 
-        // 각 장르마다 상위 2곡 선택
-        for (String genre : genreList) {
-
-            List<Song> songs = sortSong.get(genre);
-
-            songs.sort((a, b) -> {
-                if (a.play == b.play) {
-                    return a.number - b.number;   // 번호 오름차순
+        for (Map.Entry<String, List<Integer>> l : list) {
+            List<Integer> tmp = l.getValue(); // .getValue()
+            tmp.sort(
+                (a, b) -> {
+                    if (plays[a] != plays[b])
+                        return plays[b] - plays[a];
+                    else return a - b;
                 }
-                return b.play - a.play;           // 재생수 내림차순
-            });
-
-            for (int i = 0; i < Math.min(2, songs.size()); i++) {
-                result.add(songs.get(i).number);
+            );
+            int max = 0;
+            for (Integer t : tmp) {
+                if (max < 2) result.add(t);
+                max++;
             }
         }
-
         int[] answer = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            answer[i] = result.get(i);
-        }
-
+        for (int i = 0; i < result.size(); i++) answer[i] = result.get(i);
         return answer;
     }
 }
