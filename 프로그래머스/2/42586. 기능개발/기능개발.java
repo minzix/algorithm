@@ -2,29 +2,35 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        // 완성되는데 필요한 날짜를 담은 Queue 필요
-        Queue<Integer> dates = new LinkedList<>();
-        for (int i = 0; i < speeds.length; i++) {
-            int date;
-            if ((100 - progresses[i]) % speeds[i] == 0) date = (100 - progresses[i]) / speeds[i];
-            else date = (100 - progresses[i]) / speeds[i] + 1;
-            dates.add(date);
-        }
-        ArrayList<Integer> arr = new ArrayList<>();
-        // peek() 한거랑 pop() 한거랑 비교해야 함
-        while (!dates.isEmpty()) {
-            Integer date = dates.poll();
-            int featureNum = 1;
-            while (!dates.isEmpty() && date >= dates.peek()) { // 같은 경우까지 고려 필요함! (등호 추가)
-                featureNum++;
-                dates.poll();
+        
+        Queue<Integer> queue = new LinkedList<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for (int p : progresses) queue.add(p);
+        
+        int day = 0;
+        int idx = 0;
+              
+        while (!queue.isEmpty()) {
+            Integer progress = queue.poll();
+            int prev = day * speeds[idx]; // 추가 필요
+            int add = (100 - (progress + prev)) / speeds[idx];
+            if ((100 - progress) % speeds[idx] != 0) add += 1;
+            day += add;
+            System.out.println("day = " + day);
+            idx++;
+            
+            int count = 1;
+            while (!queue.isEmpty() && queue.peek() + day * speeds[idx] >= 100) {
+                queue.poll();
+                idx++;
+                count++;
+                System.out.println("idx = " + idx + " count = " + count);
             }
-            arr.add(featureNum);
+            list.add(count);
         }
-        // ArrayList -> int[]
-        int N = arr.size();
-        int[] answer = new int[N];
-        for (int i = 0; i < N; i++) answer[i] = arr.get(i);
+        int[] answer = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) answer[i] = list.get(i);
         return answer;
     }
 }
