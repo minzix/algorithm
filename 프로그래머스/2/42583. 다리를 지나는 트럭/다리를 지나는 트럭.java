@@ -1,42 +1,28 @@
 import java.util.*;
 
-// Queue는 add(), poll() 을 반복하면 일정한 길이를 유지하며 요소를 원형으로 순환시킬 수 있다 -> LinkedList<>() 이므로
-// 다리 길이 = bridge_length
-// 다리 최대 무게 = weight
-// 대기중인 트럭들 = truck_weights
-// Queue bridge 만들기 -> 각 요소를 다리에 올라와있는 트럭의 무게로 채우기. 
-// 자연히 처음에 아무 트럭도 올라와있지 않을 때에는 모두 0으로 채움
-
-// 입력값 〉	2, 10, [7, 4, 5, 6]
-// 기댓값 〉	8
-
+// 시간은 어떤 자료구조의 인덱스도 아니다. 시간의 흐름을 어떻게 표현할 수 있을까? 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int answer = 0;
         
         Queue<Integer> bridge = new LinkedList<>();
-        Queue<Integer> wait = new LinkedList<>();
-        
+        // queue 의 길이는 항상 bridge_length를 유지한다. 
         for (int i = 0; i < bridge_length; i++) bridge.add(0);
-        for (int i = 0; i < truck_weights.length; i++) wait.add(truck_weights[i]);
         
         int currentWeight = 0;
-        int time = 0;
+        int currentTime = 0;
+        int idx = 0;
         
-        while (!wait.isEmpty()) {
-            currentWeight -= bridge.peek();
-            bridge.poll();
+        while (!bridge.isEmpty() && idx < truck_weights.length) {
+            currentWeight -= bridge.poll();
             
-            if (currentWeight + wait.peek() <= weight) {
-                currentWeight += wait.peek();
-                bridge.add(wait.poll());
-            } 
-            else bridge.add(0);
+            if (currentWeight + truck_weights[idx] <= weight) {
+                bridge.add(truck_weights[idx]);
+                currentWeight += truck_weights[idx];
+                idx++;
+            } else bridge.add(0);
             
-            time++;
+            currentTime++;
         }
-        answer = time + bridge_length;
-        
-        return answer;
+        return currentTime + bridge_length;
     }
 }
