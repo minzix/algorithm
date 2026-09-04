@@ -2,25 +2,28 @@ import java.util.*;
 
 class Solution {
     public long solution(int n, int[] times) {
+        long max = (long) times[times.length - 1] * (long) n;
+        
         Arrays.sort(times);
         
-        long answer = 0;
-        long right = (long) times[times.length - 1] * n;
         long left = 0;
+        long right = max;
+        long answer = max;
         
-        while (left <= right) {
-            long sum = 0; // 시간 당 처리 가능한 사람 수
-            long mid = (right + left) / 2; 
+        while (left < right) {
+            long mid = left + (right - left) / 2;
             
-            for (int t : times) sum += (mid / t);
+            long ppl = 0;
+            for (int t : times) ppl += (mid / t);
             
-            if (sum >= n) {
-                answer = mid;
-                right = mid - 1;
+            if (ppl >= n) { 
+                answer = Math.min(answer, mid);
+                right = mid;
             } else {
                 left = mid + 1;
-            }    
+            }
         }
+        
         return answer;
     }
 }
