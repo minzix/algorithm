@@ -1,34 +1,27 @@
-import java.util.*;
-
-// 최소 필요 피로도, 소모 피로도
 class Solution {
+    int answer = 0;
     int[][] dungeons;
     boolean[] visited;
-    int minK = 1000;
-    int answer = -1;
     
     public int solution(int k, int[][] dungeons) {
+        // int[][] dungeons = ["최소 필요 피로도", "소모 피로도"] 
+        // k = 현재 피로도
         this.dungeons = dungeons;
         this.visited = new boolean[dungeons.length];
         
-        for (int[] dungeon : dungeons) minK = Math.min(minK, dungeon[0]);
         dfs(k, 0);
+        
         return answer;
     }
     
-    public void dfs(int currentK, int count) {       
+    private void dfs(int k, int count) {
         answer = Math.max(answer, count);
-        
+        if (count == dungeons.length) return;
         for (int i = 0; i < dungeons.length; i++) {
-            if (!visited[i]) {
-                int requiredK = dungeons[i][0];
-                int consumeK = dungeons[i][1];
-                
-                if (requiredK <= currentK) {
-                    visited[i] = true;
-                    dfs(currentK - consumeK, count + 1);
-                    visited[i] = false;
-                }
+            if (!visited[i] && dungeons[i][0] <= k) {
+                visited[i] = true;
+                dfs(k - dungeons[i][1], count + 1);
+                visited[i] = false;
             }
         }
     }
