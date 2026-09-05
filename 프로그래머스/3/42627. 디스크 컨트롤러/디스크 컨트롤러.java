@@ -28,22 +28,31 @@ class Solution {
         // int[num][] jobs = [작업이 요청되는 시점, 작업의 소요시간]
         Arrays.sort(jobs, (a, b) -> a[0] - b[0]);
         
-        int currentTime = 0;
+        pq.add(new Job(0, jobs[0][0], jobs[0][1]));
+        int idx = 1;
+        int currentTime = jobs[0][0];
         int turnaroundTime = 0;
-        int n = 0;
         
-        while (n < jobs.length || !pq.isEmpty()) {
-            if (pq.isEmpty() && jobs[n][0] > currentTime) {
-                currentTime = jobs[n][0];
+        // currentTime이 변할 때마다 pq에 넣을 수 있는 jobs가 있는지 체크
+        while (!pq.isEmpty() || idx < jobs.length) {
+            
+            while (idx < jobs.length && currentTime >= jobs[idx][0]) {
+                pq.add(new Job(idx, jobs[idx][0], jobs[idx][1]));
+                idx++;
             }
-            while (n < jobs.length && jobs[n][0] <= currentTime) {
-                pq.add(new Job(n, jobs[n][0], jobs[n][1]));
-                n++;
-            }
+            
             Job job = pq.poll();
             currentTime += job.requiredTime;
             turnaroundTime += (currentTime - job.arriveTime);
+
+            if (pq.isEmpty() && idx < jobs.length && currentTime < jobs[idx][0]) currentTime = jobs[idx][0];
+            
+            while (idx < jobs.length && currentTime >= jobs[idx][0]) {
+                pq.add(new Job(idx, jobs[idx][0], jobs[idx][1]));
+                idx++;
+            }
         }
+
         return turnaroundTime / jobs.length;
     }
 }
