@@ -2,35 +2,25 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        
-        Queue<Integer> queue = new LinkedList<>();
-        ArrayList<Integer> list = new ArrayList<>();
-        
-        for (int p : progresses) queue.add(p);
-        
-        int day = 0;
+        List<Integer> ans = new ArrayList<>();
+        int len = progresses.length;
         int idx = 0;
-              
-        while (!queue.isEmpty()) {
-            Integer progress = queue.poll();
-            int prev = day * speeds[idx]; // 추가 필요
-            int add = (100 - (progress + prev)) / speeds[idx];
-            if ((100 - progress) % speeds[idx] != 0) add += 1;
-            day += add;
-            System.out.println("day = " + day);
-            idx++;
+        
+        while (idx < len) {
+            int day = (100 - progresses[idx]) / speeds[idx];
+            if ((100 - progresses[idx]) % speeds[idx] != 0) day += 1;
+            int count = 0;
             
-            int count = 1;
-            while (!queue.isEmpty() && queue.peek() + day * speeds[idx] >= 100) {
-                queue.poll();
+            while (idx < len && progresses[idx] + speeds[idx] * day >= 100) {
                 idx++;
                 count++;
-                System.out.println("idx = " + idx + " count = " + count);
             }
-            list.add(count);
+            ans.add(count);
         }
-        int[] answer = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) answer[i] = list.get(i);
+        
+        int[] answer = new int[ans.size()];
+        for (int i = 0; i < ans.size(); i++) answer[i] = ans.get(i);
+        
         return answer;
     }
 }
