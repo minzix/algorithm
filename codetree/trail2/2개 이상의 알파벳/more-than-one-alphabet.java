@@ -1,0 +1,12 @@
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String A = sc.next();
+        
+        Set<Character> set = new HashSet<>();
+        for (char a : A.toCharArray()) set.add(a);
+        if (set.size() > 1) System.out.println("Yes");
+        else System.out.println("No");
+    }
+}
