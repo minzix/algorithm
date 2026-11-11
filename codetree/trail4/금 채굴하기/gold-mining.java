@@ -1,56 +1,52 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    static int[][] grid;
     static int n;
+    static int[][] grid;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         int m = sc.nextInt();
-
         grid = new int[n][n];
-
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 grid[i][j] = sc.nextInt();
 
-        int k = 1;
         int answer = 0;
 
-        while (true) {
-            if (k == (2 * n + 1)) break;
-
-            for (int y = 0; y < n; y++) {
-                for (int x = 0; x < n; x++) {
-
-                    int gain = diamond(x, y, k);
-
-                    // 문제의 K = 현재 코드의 k - 1
-                    int cost = (k - 1) * (k - 1) + k * k;
-
-                    if (gain * m >= cost) { // 손해를 보지 않는다면 저장
-                        answer = Math.max(answer, gain);
+        for (int y = 0; y < n; y++) {
+            for (int x = 0; x < n; x++) {
+                for (int k = 0; k < n * 2; k++) {
+                    int goldCount = diamond(x, y, k);
+                    if (m * goldCount >= (k * k + (k + 1) * (k + 1))) {
+                        answer = Math.max(answer, goldCount);
                     }
                 }
             }
-            k++;
         }
+        
         System.out.println(answer);
     }
 
-    private static int diamond(int x, int y, int k) {
-        int diamondCount = 0;
 
-        for (int ny = 0; ny < n; ny++) {
-            for (int nx = 0; nx < n; nx++) {
+    private static int diamond (int x, int y, int k) {
+        int gold = 0;
 
-                if (Math.abs(nx - x) + Math.abs(ny - y) < k) {
-                    diamondCount += grid[ny][nx];
+        for (int dy = -k; dy <= k; dy++) {
+            for (int dx = -k; dx <= k; dx++) {
+                if (Math.abs(dy) + Math.abs(dx) <= k) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+
+                    if (isRange(nx, ny) && grid[ny][nx] == 1) gold++;
                 }
             }
         }
+        return gold;
+    }
 
-        return diamondCount;
+    private static boolean isRange (int x, int y) {
+        return 0 <= x && 0 <= y && x < n && y < n;
     }
 }
