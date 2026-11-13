@@ -3,32 +3,28 @@ import java.util.*;
 class Point {
     int x;
     int y;
-    Point (int x, int y) {
+    Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 }
+
 public class Main {
-    static int[] dx = {0, 0, 1, -1};
-    static int[] dy = {1, -1, 0, 0};
-
-    static boolean[][] visited;
-
     static int n, k, m, answer;
-    static List<Point> stones;
     static int[][] grid, startPoints;
+    static List<Point> stones;
+    static int[] selected;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt(); // 격자의 크기
-        k = sc.nextInt(); // 시작점의 개수 
-        m = sc.nextInt(); // 치울 수 있는 돌의 개수 
-
+        n = sc.nextInt();
+        k = sc.nextInt();
+        m = sc.nextInt();
         answer = 0;
-        stones = new ArrayList<>();
-        visited = new boolean[n][n];
         grid = new int[n][n];
-        
+        selected = new int[m];
+        stones = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 grid[i][j] = sc.nextInt();
@@ -42,42 +38,45 @@ public class Main {
             startPoints[i][0] = sc.nextInt() - 1;
             startPoints[i][1] = sc.nextInt() - 1;
         }
-
+        
         dfs(0, 0);
 
         System.out.println(answer);
     }
 
-    // 각 시작점마다 bfs 로 방문 가능한 정점 개수 반환 (start 포함)
-    // 돌을 치우는 경우의 수를 계산해야함 -> 돌 배열을 만들고, 그 중 m개를 뽑는 경우의 수를 dfs로 구하기
-    private static void dfs (int start, int count) {
+    // 치울 돌의 위치 결정하는 조합 중복X dfs
+    private static void dfs (int count, int start) {
         if (count == m) {
-            for (int[] startPoint : startPoints) {
-                bfs(new Point(startPoint[1], startPoint[0]));
-            }         
-            answer = Math.max(answer, init());
+            moveStones(0);
+            bfs();
+            moveStones(1);
             return;
         }
-
         for (int i = start; i < stones.size(); i++) {
-            Point s = stones.get(i);
-            grid[s.y][s.x] = 0;
-            dfs(i + 1, count + 1);
-            grid[s.y][s.x] = 1;
+            selected[count] = i;
+            dfs(count + 1, i + 1);
         }
     }
 
-    private static void bfs (Point start) {
+    private static void bfs () {
         Queue<Point> queue = new LinkedList<>();
-        queue.add(start);
-        visited[start.y][start.x] = true;
+        boolean[][] visited = new boolean[n][n];
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+
+        int count = 0;
+
+        for (int[] start : startPoints) {
+            queue.add(new Point(start[1], start[0]));
+            visited[start[0]][start[1]] = true;
+        }
 
         while (!queue.isEmpty()) {
-            Point current = queue.poll();
-            
+            Point cur = queue.poll();
+            count++;
             for (int i = 0; i < 4; i++) {
-                int nx = current.x + dx[i];
-                int ny = current.y + dy[i];
+                int nx = cur.x + dx[i];
+                int ny = cur.y + dy[i];
 
                 if (isRange(nx, ny) && !visited[ny][nx] && grid[ny][nx] == 0) {
                     visited[ny][nx] = true;
@@ -85,22 +84,18 @@ public class Main {
                 }
             }
         }
+
+        answer = Math.max(answer, count);
     }
 
     private static boolean isRange (int x, int y) {
         return 0 <= x && 0 <= y && x < n && y < n;
     }
 
-    private static int init () {
-        int cnt = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (visited[i][j]) {
-                    cnt++;
-                    visited[i][j] = false;
-                }
-            }
+    private static void moveStones (int val) {
+        for (int idx : selected) {
+            Point stone = stones.get(idx);
+            grid[stone.y][stone.x] = val;
         }
-        return cnt;
     }
 }
