@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Main {
-    static TreeSet<Integer> indexs;            // 지운 숫자들 (자동 정렬)
+    static TreeSet<Integer> indexs;            // 지운 숫자들
     static TreeMap<Integer, Integer> lengths;  // 구간 길이 -> 개수
     static int n;
 
@@ -25,17 +25,17 @@ public class Main {
     }
 
     private static int getLongestGap(int newIdx) {
-        int l = indexs.lower(newIdx);    // newIdx보다 작은 지운 숫자 중 가장 큰 것
-        int r = indexs.higher(newIdx);   // newIdx보다 큰 지운 숫자 중 가장 작은 것
+        int left = indexs.lower(newIdx);    // newIdx보다 작은 지운 숫자 중 가장 큰 것
+        int right = indexs.higher(newIdx);  // newIdx보다 큰 지운 숫자 중 가장 작은 것
         indexs.add(newIdx);
 
-        removeLength(r - l - 1);         // 쪼개지는 기존 구간
-        addLength(newIdx - l - 1);       // 왼쪽 조각
-        addLength(r - newIdx - 1);       // 오른쪽 조각
+        removeLength(right - left - 1);     // 쪼개지는 기존 구간
+        addLength(newIdx - left - 1);       // 왼쪽 조각
+        addLength(right - newIdx - 1);      // 오른쪽 조각
 
         return lengths.lastKey();
     }
-
+    
     private static void addLength(int len) {
         if (lengths.containsKey(len)) lengths.put(len, lengths.get(len) + 1);
         else lengths.put(len, 1);
