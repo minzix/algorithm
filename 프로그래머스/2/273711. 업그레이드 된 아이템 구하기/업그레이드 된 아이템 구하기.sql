@@ -1,0 +1,13 @@
+-- 'ITEM_A'->'ITEM_B'로 업그레이드 시, ITEM_A가 B의 PARENT 아이템
+-- PARENT 아이템이 없는 아이템은 ROOT 아이템 (ITEM_A처럼)
+-- 아이템의 희귀도가 'RARE'인 아이템들의 모든 다음 업그레이드 아이템의 아이템 ID(ITEM_ID), 아이템 명(ITEM_NAME), 아이템의 희귀도(RARITY)를 출력
+SELECT I.ITEM_ID as ITEM_ID, I.ITEM_NAME as ITEM_NAME, I.RARITY as RARITY
+FROM ITEM_INFO as I
+JOIN ITEM_TREE as T
+ON I.ITEM_ID = T.ITEM_ID
+WHERE T.PARENT_ITEM_ID IN (
+    SELECT ITEM_ID
+    FROM ITEM_INFO
+    WHERE RARITY = 'RARE'
+)
+ORDER BY ITEM_ID DESC;
